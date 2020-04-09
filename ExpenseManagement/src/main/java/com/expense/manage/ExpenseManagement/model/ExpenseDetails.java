@@ -12,23 +12,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "expensemanager")
+@Table(name = "expense_details")
 public class ExpenseDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private String id;
+	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "emailId")
-	private UserCredentials userId;
+	@JoinColumn(name = "user_id")
+	private UserCredentials user_id;
 
 	@Column(name = "title")
-	private String Title;
+	private String title;
 
 	@Column(name = "category")
-	private String expense_details;
+	private String category;
 
 	@Column(name = "amount")
 	private Double amount;
@@ -41,5 +41,69 @@ public class ExpenseDetails {
 
 	@Column(name = "expense_date")
 	private Date expenseDate;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public UserCredentials getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(UserCredentials user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getContact() {
+		return contact;
+	}
+
+	public void setContact(Integer contact) {
+		this.contact = contact;
+	}
+
+	public Date getExpenseDate() {
+		return expenseDate;
+	}
+
+	public void setExpenseDate(Date expenseDate) {
+		this.expenseDate = expenseDate;
+	}
 
 }

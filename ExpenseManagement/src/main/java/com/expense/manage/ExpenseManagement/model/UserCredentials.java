@@ -1,8 +1,12 @@
 package com.expense.manage.ExpenseManagement.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +19,9 @@ public class UserCredentials {
 
 	@Column(name = "password")
 	private String password;
+
+	@OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
+	private List<ExpenseDetails> expList;
 
 	public String getId() {
 		return id;
@@ -30,6 +37,14 @@ public class UserCredentials {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<ExpenseDetails> getExpList() {
+		return expList;
+	}
+
+	public void setExpList(List<ExpenseDetails> expList) {
+		this.expList = expList;
 	}
 
 	@Override
