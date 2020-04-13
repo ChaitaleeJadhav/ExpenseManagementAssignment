@@ -8,10 +8,11 @@ public interface RegisterService {
 	public UserCredentials registerUser(UserCredentials user);
 
 	// To update a existeduser details
-	// public UserCredentials UpdateUser(UserCredentials user);
+	// Now we are upadting password
+	public UserCredentials UpdateUser(UserCredentials user);
 
 	// remove User account
-	// public UserCredentials RemoveUserAcc(UserCredentials user);
+	public String RemoveUserAcc(String userId);
 
 	// Fetch user details
 	public UserCredentials getUserById(String userId);

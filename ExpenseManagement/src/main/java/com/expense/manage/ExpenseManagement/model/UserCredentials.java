@@ -1,5 +1,6 @@
 package com.expense.manage.ExpenseManagement.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "user_credentials")
-public class UserCredentials {
+public class UserCredentials implements Serializable {
 
 	@Id
 	@Column(name = "email_id")
@@ -39,6 +42,7 @@ public class UserCredentials {
 		this.password = password;
 	}
 
+	@JsonIgnore
 	public List<ExpenseDetails> getExpList() {
 		return expList;
 	}

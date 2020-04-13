@@ -13,7 +13,9 @@ public class RegisterServiceImp implements RegisterService {
 	public UserDao userDao;
 
 	public UserCredentials registerUser(UserCredentials user) {
+
 		return userDao.saveUser(user);
+
 	}
 
 	public UserCredentials getUserById(String userId)
@@ -21,5 +23,14 @@ public class RegisterServiceImp implements RegisterService {
 	{
 		return null;
 		// return userDao.getUserById();
+	}
+
+	public UserCredentials UpdateUser(UserCredentials user) {
+		return userDao.UpdateUserPassword(user);
+
+	}
+
+	public String RemoveUserAcc(String userId) {
+		return userDao.deleteUserAccount(userId);
 	}
 }

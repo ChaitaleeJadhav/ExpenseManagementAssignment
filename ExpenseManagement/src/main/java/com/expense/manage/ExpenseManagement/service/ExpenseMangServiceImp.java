@@ -23,8 +23,13 @@ public class ExpenseMangServiceImp implements ExpenseMangService {
 	@Override
 	public List<ExpenseDetails> getAllExpenseByUserId(String userId) {
 		// TODO Auto-generated method stub
-		// return expenseDao.getAllExenseById(userId);
-		return null;
+		return expenseDao.getAllExenseById(userId);
+	}
+
+	@Override
+	public ExpenseDetails updateExpenseDetails(ExpenseDetails details) {
+		// TODO Auto-generated method stub
+		return expenseDao.updateExpense(details);
 	}
 
 }

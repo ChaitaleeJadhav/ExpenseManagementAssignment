@@ -14,4 +14,7 @@ public interface ExpenseMangService {
 	public List<ExpenseDetails> getAllExpenseByUserId(String userId);
 
 	// get Summary of Expnse month wise
+
+	// Update Expense details by Id
+	public ExpenseDetails updateExpenseDetails(ExpenseDetails details);
 }

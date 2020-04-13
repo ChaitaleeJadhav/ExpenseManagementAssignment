@@ -1,5 +1,6 @@
 package com.expense.manage.ExpenseManagement.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "expense_details")
-public class ExpenseDetails {
+public class ExpenseDetails implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class ExpenseDetails {
 	private String description;
 
 	@Column(name = "contact")
-	private Integer contact;
+	private String contact;
 
 	@Column(name = "expense_date")
 	private Date expenseDate;
@@ -90,20 +91,20 @@ public class ExpenseDetails {
 		this.description = description;
 	}
 
-	public Integer getContact() {
-		return contact;
-	}
-
-	public void setContact(Integer contact) {
-		this.contact = contact;
-	}
-
 	public Date getExpenseDate() {
 		return expenseDate;
 	}
 
 	public void setExpenseDate(Date expenseDate) {
 		this.expenseDate = expenseDate;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 }

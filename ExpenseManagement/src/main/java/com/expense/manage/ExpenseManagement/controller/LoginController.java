@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,15 +35,37 @@ public class LoginController {
 	// Register user
 
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST)
-	public ResponseEntity<Object> registerUserDetails(@Valid
+	public ResponseEntity<UserCredentials> registerUserDetails(@Valid
 	@RequestBody
 	UserCredentials user) {
+		// ResponseEntity<UserCredentials> response = null;
 		LOG.info("In the Login Controller Of register user method");
-		UserCredentials userInfo = regService.registerUser(user);
-		Object response = userInfo;
-		if (userInfo == null) {
-			response = "User is not added";
-		}
+
+		UserCredentials response = regService.registerUser(user);
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+	public ResponseEntity<UserCredentials> updateUserDetails(@Valid
+	@RequestBody
+	UserCredentials user) {
+
+		LOG.info("In the Login Controller Of update user method");
+
+		UserCredentials response = regService.UpdateUser(user);
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@RequestMapping(value = "/deleteAccount", method = RequestMethod.POST)
+	public ResponseEntity<String> removeUserAccount(@Valid
+	@RequestParam(value = "id", required = true)
+	String userId) {
+
+		LOG.info("In the Login Controller Of Delete user account method");
+
+		String response = regService.RemoveUserAcc(userId);
 
 		return ResponseEntity.ok().body(response);
 	}
