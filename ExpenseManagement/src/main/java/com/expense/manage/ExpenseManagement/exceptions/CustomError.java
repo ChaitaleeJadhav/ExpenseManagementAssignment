@@ -1,9 +1,11 @@
 package com.expense.manage.ExpenseManagement.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 public class CustomError {
 
 	private String error;
-	private String exception;
+	private HttpStatus status;
 
 	public String getError() {
 		return error;
@@ -13,12 +15,12 @@ public class CustomError {
 		this.error = error;
 	}
 
-	public String getException() {
-		return exception;
+	public HttpStatus getStatus() {
+		return status;
 	}
 
-	public void setException(String exception) {
-		this.exception = exception;
+	public void setStatus(HttpStatus status) {
+		this.status = status;
 	}
 
 }

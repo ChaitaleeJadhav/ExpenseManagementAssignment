@@ -23,13 +23,29 @@ public class ExpenseDao {
 	private static final Logger LOG = LogManager.getLogger(ExpenseDao.class);
 
 	public ExpenseDetails addExpense(ExpenseDetails details) {
-		return expenserpo.save(details);
+		String userId = details.getUser_id().getId();
+		if (regrpo.existsById(userId)) {
+			return expenserpo.save(details);
+		}
+		else {
+			LOG.error("User Account not exists");
+			throw new ResourceNotFoundException(
+					"User account is not found,Please first create user account to add expenses");
+
+		}
 	}
 
 	public List<ExpenseDetails> getAllExenseById(String userId) {
 
-		List<ExpenseDetails> expnseList = expenserpo.getExpenseDetailsById(userId);
-		return expnseList;
+		if (regrpo.existsById(userId)) {
+			List<ExpenseDetails> expnseList = expenserpo.getExpenseDetailsById(userId);
+			return expnseList;
+		}
+		else {
+			LOG.error("User Account not exists ");
+			throw new ResourceNotFoundException("User account is not found");
+
+		}
 
 	}
 
@@ -54,12 +70,26 @@ public class ExpenseDao {
 			if (details.getTitle() != null) {
 				updateDetails.setTitle(details.getTitle());
 			}
-			return expenserpo.save(details);
+			return expenserpo.save(updateDetails);
 		}
 		else {
 			LOG.error("Expense Id not Found");
 			throw new ResourceNotFoundException("Expense Id is not found");
 		}
 
+	}
+
+	public List<Object[]> getSummaryOfExpenseById(String userId) {
+
+		if (regrpo.existsById(userId)) {
+			List<Object[]> expnseList = expenserpo.getSummaryExpenseById(userId);
+
+			return expnseList;
+		}
+		else {
+			LOG.error("User Account not exists ");
+			throw new ResourceNotFoundException("User account is not found");
+
+		}
 	}
 }

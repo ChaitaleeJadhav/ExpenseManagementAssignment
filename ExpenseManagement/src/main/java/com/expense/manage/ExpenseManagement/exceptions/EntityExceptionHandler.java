@@ -13,8 +13,8 @@ public class EntityExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<CustomError> handleAllExceptions(Exception ex, WebRequest request) {
 		CustomError errorObj = new CustomError();
-		errorObj.setError("Id is already exists");
-		errorObj.setException(ex.getMessage());
+		errorObj.setError(ex.getMessage());
+		errorObj.setStatus(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<CustomError>(errorObj, new HttpHeaders(), HttpStatus.NOT_FOUND);
 	}
 

@@ -60,11 +60,11 @@ public class ExpenseManagerController {
 	}
 
 	@RequestMapping(value = "/summaryExpense", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, String>> updateExpenseDetails(@Valid
+	public ResponseEntity<Map<String, String>> summaryExpenseDetails(@Valid
 	@RequestParam(value = "id", required = true)
 	String userId) {
 		LOG.info("In the ExpenseManagerController Controller Of get Summary of Expense month wise details method");
-		Map<String, String> response = null;
+		Map<String, String> response = expnseService.showSummaryExpense(userId);
 		return ResponseEntity.ok().body(response);
 	}
 

@@ -1,6 +1,7 @@
 package com.expense.manage.ExpenseManagement.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.expense.manage.ExpenseManagement.model.ExpenseDetails;
 
@@ -14,6 +15,7 @@ public interface ExpenseMangService {
 	public List<ExpenseDetails> getAllExpenseByUserId(String userId);
 
 	// get Summary of Expnse month wise
+	public Map<String, String> showSummaryExpense(String userId);
 
 	// Update Expense details by Id
 	public ExpenseDetails updateExpenseDetails(ExpenseDetails details);
