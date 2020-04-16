@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
+import com.expense.manage.ExpenseManagement.mail.ThreadService;
 import com.expense.manage.ExpenseManagement.model.ExpenseDetails;
 import com.expense.manage.ExpenseManagement.service.ExpenseMangService;
 
 @RestController
 @RequestMapping("/expense")
 public class ExpenseManagerController {
+
+	@Autowired
+	private ThreadService threadService;
 
 	@Autowired
 	public ExpenseMangService expnseService;
@@ -55,8 +60,14 @@ public class ExpenseManagerController {
 	@RequestBody
 	ExpenseDetails details) {
 		LOG.info("In the ExpenseManagerController Controller Of Update Expense details method");
-		ExpenseDetails response = expnseService.updateExpenseDetails(details);
-		return ResponseEntity.ok().body(response);
+		if (details.getId() != null) {
+			ExpenseDetails response = expnseService.updateExpenseDetails(details);
+
+			return ResponseEntity.ok().body(response);
+		}
+		else {
+			throw new ResourceNotFoundException("Expense Id can not be null,Please provide Expense Id to Update");
+		}
 	}
 
 	@RequestMapping(value = "/summaryExpense", method = RequestMethod.GET)
@@ -66,6 +77,19 @@ public class ExpenseManagerController {
 		LOG.info("In the ExpenseManagerController Controller Of get Summary of Expense month wise details method");
 		Map<String, String> response = expnseService.showSummaryExpense(userId);
 		return ResponseEntity.ok().body(response);
+	}
+
+	@RequestMapping(value = "/mailSummary", method = RequestMethod.POST)
+	public void senMail(@RequestParam(value = "id", required = true)
+	String userId) {
+
+		try {
+			System.out.println("In the controller of mail");
+			threadService.callToMail(userId);
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 }

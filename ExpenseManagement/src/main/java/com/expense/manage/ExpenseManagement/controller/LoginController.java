@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
 import com.expense.manage.ExpenseManagement.service.RegisterService;
 
@@ -52,10 +53,14 @@ public class LoginController {
 	UserCredentials user) {
 
 		LOG.info("In the Login Controller Of update user method");
+		if (user.getId() != null) {
+			UserCredentials response = regService.UpdateUser(user);
+			return ResponseEntity.ok().body(response);
+		}
+		else {
+			throw new ResourceNotFoundException("User Id can not be null,Please provide User Id to Update");
+		}
 
-		UserCredentials response = regService.UpdateUser(user);
-
-		return ResponseEntity.ok().body(response);
 	}
 
 	@RequestMapping(value = "/deleteAccount", method = RequestMethod.POST)
