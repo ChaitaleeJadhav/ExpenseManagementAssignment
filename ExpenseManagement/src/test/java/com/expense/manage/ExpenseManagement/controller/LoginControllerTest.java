@@ -60,6 +60,7 @@ public class LoginControllerTest {
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 
+	// Test for Update
 	@Test
 	public void updatePasswordTest() throws Exception {
 
