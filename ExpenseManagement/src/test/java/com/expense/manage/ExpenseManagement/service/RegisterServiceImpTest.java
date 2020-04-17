@@ -2,15 +2,18 @@ package com.expense.manage.ExpenseManagement.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.expense.manage.ExpenseManagement.dao.UserDao;
+import com.expense.manage.ExpenseManagement.dto.UserDto;
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
 
 @RunWith(SpringRunner.class)
@@ -23,27 +26,34 @@ public class RegisterServiceImpTest {
 	@MockBean
 	public UserDao userdao;
 
-	@Test
-	public void testAddUser() {
+	public static UserCredentials userDetail;
+	public static UserDto userDto;
 
+	@BeforeClass
+	public static void craeteExpense() {
+		ModelMapper modelMapper = new ModelMapper();
 		UserCredentials user = new UserCredentials();
 		user.setId("subi19990j@gmail.com");
 		user.setPassword("password");
-		Mockito.when(userdao.saveUser(user)).thenReturn(user);
+		userDetail = user;
+		userDto = modelMapper.map(user, UserDto.class);
+	}
 
-		assertThat(regService.registerUser(user)).isEqualTo(user);
+	@Test
+	public void testAddUser() {
+
+		Mockito.when(userdao.saveUser(userDetail)).thenReturn(userDto);
+
+		assertThat(regService.registerUser(userDetail)).isEqualTo(userDto);
 
 	}
 
 	@Test
 	public void testUpdatePasswod() {
 
-		UserCredentials user = new UserCredentials();
-		user.setId("subi19990j@gmail.com");
-		user.setPassword("Nanciy");
-		Mockito.when(userdao.UpdateUserPassword(user)).thenReturn(user);
+		Mockito.when(userdao.UpdateUserPassword(userDetail)).thenReturn(userDto);
 
-		assertThat(regService.UpdateUser(user)).isEqualTo(user);
+		assertThat(regService.UpdateUser(userDetail)).isEqualTo(userDto);
 
 	}
 

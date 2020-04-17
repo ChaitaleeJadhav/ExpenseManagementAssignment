@@ -5,29 +5,36 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.expense.manage.ExpenseManagement.dto.UserDto;
 import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
+import com.expense.manage.ExpenseManagement.service.ModelMapperService;
 
 @Repository("userdao")
 public class UserDao {
 
 	@Autowired
+	public ModelMapperService modelMapperService;
+
+	@Autowired
 	public RegisterRepository regrpo;
 
-	public UserCredentials saveUser(UserCredentials user) {
+	public UserDto saveUser(UserCredentials user) {
 		Boolean existUser = regrpo.existsById(user.getId());
 		if (existUser) {
 			throw new ResourceNotFoundException("UserId id is already Exists,Want Unique user id");
 		}
 		else {
-			return regrpo.save(user);
+			UserCredentials resultUser = regrpo.save(user);
+			return modelMapperService.mappedToUsetDto(resultUser);
 		}
 	}
 
-	public UserCredentials UpdateUserPassword(UserCredentials user) {
+	public UserDto UpdateUserPassword(UserCredentials user) {
 		Boolean existUser = regrpo.existsById(user.getId());
 		if (existUser) {
-			return regrpo.save(user);
+			UserCredentials resultUser = regrpo.save(user);
+			return modelMapperService.mappedToUsetDto(resultUser);
 		}
 		else {
 			throw new ResourceNotFoundException("UserId Account Not found");

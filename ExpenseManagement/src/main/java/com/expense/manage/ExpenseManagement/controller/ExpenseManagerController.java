@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.expense.manage.ExpenseManagement.dto.ExpenseDto;
+import com.expense.manage.ExpenseManagement.exceptions.ExpenseException;
 import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
 import com.expense.manage.ExpenseManagement.mail.ThreadService;
 import com.expense.manage.ExpenseManagement.model.ExpenseDetails;
@@ -32,36 +34,38 @@ public class ExpenseManagerController {
 	private static final Logger LOG = LogManager.getLogger(ExpenseManagerController.class);
 
 	@RequestMapping(value = "/addExpense", method = RequestMethod.POST)
-	public ResponseEntity<ExpenseDetails> addExpenseDetails(@Valid
+	public ResponseEntity<ExpenseDto> addExpenseDetails(@Valid
 	@RequestBody
 	ExpenseDetails details) {
-		LOG.info("In the ExpenseManagerController Controller Of Add Expense details method");
-		ExpenseDetails response = expnseService.addExpenseDetails(details);
+		try {
+			LOG.info("In the ExpenseManagerController Controller Of Add Expense details method");
+			ExpenseDto response = expnseService.addExpenseDetails(details);
+			return ResponseEntity.ok().body(response);
+		}
+		catch (Exception e) {
+			LOG.error("Excpeton occurs in ExpenseManagerController adding expense to user" + e);
+			throw new ExpenseException("some exception occured while adding expense to user");
+		}
 
-		return ResponseEntity.ok().body(response);
 	}
 
 	@RequestMapping(value = "/getAllExpenses", method = RequestMethod.GET)
-	public ResponseEntity<Object> addExpenseDetails(@Valid
+	public ResponseEntity<List<ExpenseDto>> getExpenseDetailsById(@Valid
 	@RequestParam(value = "id", required = true)
 	String userId) {
 		LOG.info("In the ExpenseManagerController Controller Of get All Expense details method");
-		List<ExpenseDetails> expenseList = expnseService.getAllExpenseByUserId(userId);
-		Object response = expenseList;
-		if (expenseList == null) {
-			response = "Expense details is not found";
-		}
+		List<ExpenseDto> response = expnseService.getAllExpenseByUserId(userId);
 
 		return ResponseEntity.ok().body(response);
 	}
 
 	@RequestMapping(value = "/updateExpense", method = RequestMethod.POST)
-	public ResponseEntity<ExpenseDetails> updateExpenseDetails(@Valid
+	public ResponseEntity<ExpenseDto> updateExpenseDetails(@Valid
 	@RequestBody
 	ExpenseDetails details) {
 		LOG.info("In the ExpenseManagerController Controller Of Update Expense details method");
 		if (details.getId() != null) {
-			ExpenseDetails response = expnseService.updateExpenseDetails(details);
+			ExpenseDto response = expnseService.updateExpenseDetails(details);
 
 			return ResponseEntity.ok().body(response);
 		}
@@ -74,9 +78,16 @@ public class ExpenseManagerController {
 	public ResponseEntity<Map<String, String>> summaryExpenseDetails(@Valid
 	@RequestParam(value = "id", required = true)
 	String userId) {
-		LOG.info("In the ExpenseManagerController Controller Of get Summary of Expense month wise details method");
-		Map<String, String> response = expnseService.showSummaryExpense(userId);
-		return ResponseEntity.ok().body(response);
+		try {
+			LOG.info("In the ExpenseManagerController Controller Of get Summary of Expense month wise details method");
+			Map<String, String> response = expnseService.showSummaryExpense(userId);
+			return ResponseEntity.ok().body(response);
+		}
+		catch (Exception e) {
+			LOG.error("Excpeton occurs in ExpenseManagerController whilegetting summary of expense" + e);
+			throw new ExpenseException("some exception occured while getting summary of expense" + userId);
+		}
+
 	}
 
 	@RequestMapping(value = "/mailSummary", method = RequestMethod.POST)

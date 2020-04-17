@@ -2,17 +2,23 @@ package com.expense.manage.ExpenseManagement.dao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.expense.manage.ExpenseManagement.dto.ExpenseDto;
 import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
 import com.expense.manage.ExpenseManagement.model.ExpenseDetails;
+import com.expense.manage.ExpenseManagement.service.ModelMapperService;
 
 @Repository("expenseDao")
 public class ExpenseDao {
+
+	@Autowired
+	public ModelMapperService modelMapperService;
 
 	@Autowired
 	public ExpenseRepository expenserpo;
@@ -22,10 +28,11 @@ public class ExpenseDao {
 
 	private static final Logger LOG = LogManager.getLogger(ExpenseDao.class);
 
-	public ExpenseDetails addExpense(ExpenseDetails details) {
+	public ExpenseDto addExpense(ExpenseDetails details) {
 		String userId = details.getUser_id().getId();
 		if (regrpo.existsById(userId)) {
-			return expenserpo.save(details);
+			ExpenseDetails resultExpense = expenserpo.save(details);
+			return modelMapperService.mappedToExpenseDto(resultExpense);
 		}
 		else {
 			LOG.error("User Account not exists");
@@ -35,11 +42,13 @@ public class ExpenseDao {
 		}
 	}
 
-	public List<ExpenseDetails> getAllExenseById(String userId) {
+	public List<ExpenseDto> getAllExenseById(String userId) {
 
 		if (regrpo.existsById(userId)) {
 			List<ExpenseDetails> expnseList = expenserpo.getExpenseDetailsById(userId);
-			return expnseList;
+			List<ExpenseDto> resultList = expnseList.stream().map(modelMapperService::mappedToExpenseDto)
+					.collect(Collectors.toList());
+			return resultList;
 		}
 		else {
 			LOG.error("User Account not exists ");
@@ -49,7 +58,7 @@ public class ExpenseDao {
 
 	}
 
-	public ExpenseDetails updateExpense(ExpenseDetails details) {
+	public ExpenseDto updateExpense(ExpenseDetails details) {
 
 		Optional<ExpenseDetails> update = expenserpo.findById(details.getId());
 
@@ -70,7 +79,10 @@ public class ExpenseDao {
 			if (details.getTitle() != null) {
 				updateDetails.setTitle(details.getTitle());
 			}
-			return expenserpo.save(updateDetails);
+
+			ExpenseDetails resultExpense = expenserpo.save(updateDetails);
+			return modelMapperService.mappedToExpenseDto(resultExpense);
+
 		}
 		else {
 			LOG.error("Expense Id not Found");

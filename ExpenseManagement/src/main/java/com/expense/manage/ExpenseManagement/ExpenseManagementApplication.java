@@ -1,7 +1,9 @@
 package com.expense.manage.ExpenseManagement;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class ExpenseManagementApplication {
@@ -12,4 +14,8 @@ public class ExpenseManagementApplication {
 
 	}
 
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
 }

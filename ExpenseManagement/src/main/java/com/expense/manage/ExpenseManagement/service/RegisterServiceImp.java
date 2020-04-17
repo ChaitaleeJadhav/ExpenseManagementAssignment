@@ -1,9 +1,13 @@
 package com.expense.manage.ExpenseManagement.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.expense.manage.ExpenseManagement.dao.UserDao;
+import com.expense.manage.ExpenseManagement.dto.UserDto;
+import com.expense.manage.ExpenseManagement.exceptions.ExpenseException;
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
 
 @Service("regService")
@@ -12,25 +16,46 @@ public class RegisterServiceImp implements RegisterService {
 	@Autowired
 	public UserDao userDao;
 
-	public UserCredentials registerUser(UserCredentials user) {
+	private static final Logger LOG = LogManager.getLogger(RegisterServiceImp.class);
 
-		return userDao.saveUser(user);
-
+	public UserDto registerUser(UserCredentials user) {
+		try {
+			return userDao.saveUser(user);
+		}
+		catch (Exception e) {
+			LOG.error("Excpeton occurs in save user service" + e);
+			throw new ExpenseException("some exception occured while saving user");
+		}
 	}
 
-	public UserCredentials getUserById(String userId)
+	// Not in use
+	public UserDto getUserById(String userId)
 
 	{
 		return null;
 		// return userDao.getUserById();
 	}
 
-	public UserCredentials UpdateUser(UserCredentials user) {
-		return userDao.UpdateUserPassword(user);
+	public UserDto UpdateUser(UserCredentials user) {
+		try {
+
+			return userDao.UpdateUserPassword(user);
+
+		}
+		catch (Exception e) {
+			LOG.error("Excpeton occurs in updae user password service" + e);
+			throw new ExpenseException("some exception occured while updating password of user");
+		}
 
 	}
 
 	public String RemoveUserAcc(String userId) {
-		return userDao.deleteUserAccount(userId);
+		try {
+			return userDao.deleteUserAccount(userId);
+		}
+		catch (Exception e) {
+			LOG.error("Excpeton occurs in deleting user service" + e);
+			throw new ExpenseException("exception occured while deleting user account");
+		}
 	}
 }

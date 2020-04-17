@@ -58,17 +58,17 @@ public class MailService {
 			javaMailSender.send(message);
 		}
 		catch (AddressException e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 			System.out.println("Error occured while sending email AddressException" + userId);
 
 		}
 		catch (MessagingException e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 			System.out.println("Error occured while sending email MessagingException " + userId);
 
 		}
 		catch (Exception e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 			System.out.println("Error occured while sending email " + userId);
 		}
 	}
