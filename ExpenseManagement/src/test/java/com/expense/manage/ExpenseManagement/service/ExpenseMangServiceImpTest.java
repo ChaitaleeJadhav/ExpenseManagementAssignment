@@ -2,6 +2,9 @@ package com.expense.manage.ExpenseManagement.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -58,6 +61,30 @@ public class ExpenseMangServiceImpTest {
 		Mockito.when(expenseDao.updateExpense(expense)).thenReturn(expense);
 
 		assertThat(expnseService.updateExpenseDetails(expense)).isEqualTo(expense);
+
+	}
+
+	@Test
+	public void getAllExpenseByUserId() {
+		List<ExpenseDetails> list = new ArrayList<ExpenseDetails>();
+
+		ExpenseDetails expense = new ExpenseDetails();
+		expense.setId(6);
+		expense.setAmount(22.67);
+		expense.setCategory("phone");
+		expense.setContact("87609835334");
+		expense.setDescription("description");
+		expense.setTitle("Redmi");
+		// Date date = new Date;
+		// expense.setExpenseDate(date);
+		UserCredentials user_id = new UserCredentials();
+		user_id.setId("chaitalee@gmail.com");
+		expense.setUser_id(user_id);
+		list.add(expense);
+
+		Mockito.when(expenseDao.getAllExenseById(user_id.getId())).thenReturn(list);
+
+		assertThat(expnseService.getAllExpenseByUserId(user_id.getId())).isEqualTo(list);
 
 	}
 
