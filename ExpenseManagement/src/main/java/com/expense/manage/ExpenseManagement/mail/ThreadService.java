@@ -23,16 +23,16 @@ public class ThreadService {
 			@Override
 			public void run() {
 				try {
-					mailService.sendEmail(userId);
+					// mailService.sendEmail(userId);
 				}
 				catch (Exception e) {
-					LOG.error("failed", e);
+					LOG.error("failed to send Mail", e);
 				}
 			}
 		});
 
 		emailExecutor.shutdown();
-		return "String";
+		return "Sending a Mail To User";
 	}
 
 }

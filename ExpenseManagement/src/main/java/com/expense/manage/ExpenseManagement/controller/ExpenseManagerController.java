@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.expense.manage.ExpenseManagement.dto.ExpenseDto;
 import com.expense.manage.ExpenseManagement.exceptions.ExpenseException;
 import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
+import com.expense.manage.ExpenseManagement.mail.MailService;
 import com.expense.manage.ExpenseManagement.mail.ThreadService;
 import com.expense.manage.ExpenseManagement.model.ExpenseDetails;
 import com.expense.manage.ExpenseManagement.service.ExpenseMangService;
@@ -25,6 +26,9 @@ import com.expense.manage.ExpenseManagement.service.ExpenseMangService;
 @RestController
 @RequestMapping("/expense")
 public class ExpenseManagerController {
+
+	@Autowired
+	private MailService mailService;
 
 	@Autowired
 	private ThreadService threadService;
@@ -91,15 +95,16 @@ public class ExpenseManagerController {
 	}
 
 	@RequestMapping(value = "/mailSummary", method = RequestMethod.POST)
-	public void senMail(@RequestParam(value = "id", required = true)
+	public String senMail(@RequestParam(value = "id", required = true)
 	String userId) {
-
 		try {
 			System.out.println("In the controller of mail");
-			threadService.callToMail(userId);
+			String result = threadService.callToMail(userId);
+			// mailService.sendEmail(userId);
+			return result;
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			throw new ExpenseException("some exception occured while sending a mail" + userId);
 		}
 	}
 

@@ -49,6 +49,7 @@ public class ExpenseDao {
 			List<ExpenseDto> resultList = expnseList.stream().map(modelMapperService::mappedToExpenseDto)
 					.collect(Collectors.toList());
 			return resultList;
+
 		}
 		else {
 			LOG.error("User Account not exists ");
@@ -79,10 +80,8 @@ public class ExpenseDao {
 			if (details.getTitle() != null) {
 				updateDetails.setTitle(details.getTitle());
 			}
-
 			ExpenseDetails resultExpense = expenserpo.save(updateDetails);
 			return modelMapperService.mappedToExpenseDto(resultExpense);
-
 		}
 		else {
 			LOG.error("Expense Id not Found");

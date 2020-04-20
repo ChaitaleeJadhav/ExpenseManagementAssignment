@@ -1,6 +1,6 @@
 package com.expense.manage.ExpenseManagement.service;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ public class ExpenseMangServiceImp implements ExpenseMangService {
 		// TODO Auto-generated method stub
 		try {
 			double total = 0;
-			Map<String, String> listOfExpense = new HashMap<String, String>();
+			Map<String, String> listOfExpense = new LinkedHashMap<String, String>();
 			List<Object[]> list = expenseDao.getSummaryOfExpenseById(userId);
 			for (Object[] array : list) {
 				// here at 0 index of Object Array we have maonth and Year and
