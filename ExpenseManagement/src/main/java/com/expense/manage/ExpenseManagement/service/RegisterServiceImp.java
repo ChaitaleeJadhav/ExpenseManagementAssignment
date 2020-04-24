@@ -21,6 +21,7 @@ public class RegisterServiceImp implements RegisterService {
 	public UserDto registerUser(UserCredentials user) {
 		try {
 			return userDao.saveUser(user);
+
 		}
 		catch (Exception e) {
 			LOG.error("Excpeton occurs in save user service" + e);

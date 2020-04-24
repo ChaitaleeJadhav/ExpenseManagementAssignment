@@ -99,9 +99,9 @@ public class ExpenseManagerController {
 	String userId) {
 		try {
 			System.out.println("In the controller of mail");
-			String result = threadService.callToMail(userId);
+			// String result = threadService.callToMail(userId);
 			// mailService.sendEmail(userId);
-			return result;
+			return null;
 		}
 		catch (Exception e) {
 			throw new ExpenseException("some exception occured while sending a mail" + userId);

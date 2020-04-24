@@ -19,18 +19,14 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
-import com.expense.manage.ExpenseManagement.service.ModelMapperService;
+import com.expense.manage.ExpenseManagement.service.CommonOper;
 import com.expense.manage.ExpenseManagement.service.RegisterService;
-import com.expense.manage.ExpenseManagement.service.RegisterServiceImpTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = LoginController.class)
 public class LoginControllerTest {
-
-	@Autowired
-	public ModelMapperService modelMapperService;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -41,12 +37,13 @@ public class LoginControllerTest {
 	@Test
 	public void testCreateTicket() throws Exception {
 
-		String inputInJson = this.mapToJson(RegisterServiceImpTest.userDetail);
+		CommonOper.craeteUser();
+		String inputInJson = this.mapToJson(CommonOper.userDetail);
+		String responeInJson = this.mapToJson(CommonOper.userDto);
 
 		String URI = "/login/registerUser";
 
-		Mockito.when(regService.registerUser(Mockito.any(UserCredentials.class)))
-				.thenReturn(RegisterServiceImpTest.userDto);
+		Mockito.when(regService.registerUser(Mockito.any(UserCredentials.class))).thenReturn(CommonOper.userDto);
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post(URI).accept(MediaType.APPLICATION_JSON)
 				.content(inputInJson).contentType(MediaType.APPLICATION_JSON);
@@ -56,7 +53,7 @@ public class LoginControllerTest {
 
 		String outputInJson = response.getContentAsString();
 
-		assertThat(outputInJson).isEqualTo(inputInJson);
+		assertThat(outputInJson).isEqualTo(responeInJson);
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 
@@ -64,12 +61,12 @@ public class LoginControllerTest {
 	@Test
 	public void updatePasswordTest() throws Exception {
 
-		String inputInJson = this.mapToJson(RegisterServiceImpTest.userDetail);
+		String inputInJson = this.mapToJson(CommonOper.userDetail);
+		String responeInJson = this.mapToJson(CommonOper.userDto);
 
 		String URI = "/login/updatePassword";
 
-		Mockito.when(regService.UpdateUser(Mockito.any(UserCredentials.class)))
-				.thenReturn(RegisterServiceImpTest.userDto);
+		Mockito.when(regService.UpdateUser(Mockito.any(UserCredentials.class))).thenReturn(CommonOper.userDto);
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post(URI).accept(MediaType.APPLICATION_JSON)
 				.content(inputInJson).contentType(MediaType.APPLICATION_JSON);
@@ -79,11 +76,33 @@ public class LoginControllerTest {
 
 		String outputInJson = response.getContentAsString();
 
-		assertThat(outputInJson).isEqualTo(inputInJson);
+		assertThat(outputInJson).isEqualTo(responeInJson);
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 
-	private String mapToJson(Object object) throws JsonProcessingException {
+	// Test case for Delete
+	@Test
+	public void removeUserAccountTest() throws Exception {
+
+		String URI = "/login/deleteAccount?id=subi19990j@gmail.com";
+
+		Mockito.when(regService.RemoveUserAcc(Mockito.any(String.class)))
+				.thenReturn("User Account deleted succesfully");
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post(URI).accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+
+		String outputInJson = response.getContentAsString();
+
+		assertThat(outputInJson).isEqualTo("User Account deleted succesfully");
+		assertEquals(HttpStatus.OK.value(), response.getStatus());
+	}
+
+	// Method to map Object to Json
+	public static String mapToJson(Object object) throws JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		return objectMapper.writeValueAsString(object);
 	}
