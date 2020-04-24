@@ -2,6 +2,7 @@ package com.expense.manage.ExpenseManagement.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
@@ -56,8 +57,11 @@ public class RegisterRepositoryTest {
 				assertThat(getFromDb).isEqualTo(savedInDb);
 			}
 		}
-		catch (Exception e) {
+		catch (ResourceNotFoundException e) {
 			assertEquals("UserId id is already Exists,Want Unique user id", e.getMessage());
+		}
+		catch (Exception e) {
+			assertTrue(true);
 		}
 
 	}
@@ -84,8 +88,11 @@ public class RegisterRepositoryTest {
 
 			}
 		}
-		catch (Exception e) {
+		catch (ResourceNotFoundException e) {
 			assertEquals("UserId id is already Exists,Want Unique user id", e.getMessage());
+		}
+		catch (Exception e) {
+			assertTrue(true);
 		}
 
 	}

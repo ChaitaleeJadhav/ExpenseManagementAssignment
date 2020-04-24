@@ -2,6 +2,7 @@ package com.expense.manage.ExpenseManagement.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.transaction.Transactional;
 
@@ -41,8 +42,9 @@ public class UserDaoTest {
 			assertEquals("UserId id is already Exists,Want Unique user id", re.getMessage());
 		}
 		catch (Exception e) {
-			// AssertionFailedException("");
+			assertTrue(true);
 		}
 
 	}
+
 }
