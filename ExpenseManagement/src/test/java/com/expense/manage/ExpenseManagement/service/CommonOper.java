@@ -13,6 +13,8 @@ import com.expense.manage.ExpenseManagement.dto.ExpenseDto;
 import com.expense.manage.ExpenseManagement.dto.UserDto;
 import com.expense.manage.ExpenseManagement.model.ExpenseDetails;
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,8 +26,9 @@ public class CommonOper {
 	public static ModelMapper modelMapper = new ModelMapper();
 	public static ExpenseDto expenseDto;
 	public static List<ExpenseDetails> listExpense;
-
+	public static ExpenseDetails updateExpense;
 	public static List<ExpenseDto> listExpenseDto;
+	public static ExpenseDetails updateExpenseIdNull;
 
 	@BeforeClass
 	public static void craeteUser() {
@@ -83,6 +86,23 @@ public class CommonOper {
 	}
 
 	@BeforeClass
+	public static void updateExpense() {
+		ExpenseDetails expense = new ExpenseDetails();
+		expense.setId(7);
+		expense.setCategory("Updated license OS");
+		expense.setDescription("updated description");
+		updateExpense = expense;
+	}
+
+	@BeforeClass
+	public static void updateExpenseIdNull() {
+		ExpenseDetails expense = new ExpenseDetails();
+
+		expense.setCategory("Updated license OS");
+		updateExpenseIdNull = expense;
+	}
+
+	@BeforeClass
 	public static ExpenseDetails getExpense() {
 		ExpenseDetails expense = new ExpenseDetails();
 		expense.setAmount(12.1);
@@ -98,4 +118,9 @@ public class CommonOper {
 		return expense;
 	}
 
+	// Method to map Object to Json
+	public static String mapToJson(Object object) throws JsonProcessingException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		return objectMapper.writeValueAsString(object);
+	}
 }

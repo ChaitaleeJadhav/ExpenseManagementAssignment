@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.expense.manage.ExpenseManagement.dao.UserDao;
 import com.expense.manage.ExpenseManagement.dto.UserDto;
 import com.expense.manage.ExpenseManagement.exceptions.ExpenseException;
+import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
 
 @Service("regService")
@@ -22,6 +23,10 @@ public class RegisterServiceImp implements RegisterService {
 		try {
 			return userDao.saveUser(user);
 
+		}
+		catch (ResourceNotFoundException re) {
+			// throw a dao exception if occurs
+			throw re;
 		}
 		catch (Exception e) {
 			LOG.error("Excpeton occurs in save user service" + e);
@@ -43,6 +48,10 @@ public class RegisterServiceImp implements RegisterService {
 			return userDao.UpdateUserPassword(user);
 
 		}
+		catch (ResourceNotFoundException re) {
+			// throw a dao exception if occurs
+			throw re;
+		}
 		catch (Exception e) {
 			LOG.error("Excpeton occurs in updae user password service" + e);
 			throw new ExpenseException("some exception occured while updating password of user");
@@ -53,6 +62,10 @@ public class RegisterServiceImp implements RegisterService {
 	public String RemoveUserAcc(String userId) {
 		try {
 			return userDao.deleteUserAccount(userId);
+		}
+		catch (ResourceNotFoundException re) {
+			// throw a dao exception if occurs
+			throw re;
 		}
 		catch (Exception e) {
 			LOG.error("Excpeton occurs in deleting user service" + e);

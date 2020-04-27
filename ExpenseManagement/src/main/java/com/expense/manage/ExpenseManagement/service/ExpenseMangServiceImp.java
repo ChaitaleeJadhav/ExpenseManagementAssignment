@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.expense.manage.ExpenseManagement.dao.ExpenseDao;
 import com.expense.manage.ExpenseManagement.dto.ExpenseDto;
 import com.expense.manage.ExpenseManagement.exceptions.ExpenseException;
+import com.expense.manage.ExpenseManagement.exceptions.ResourceNotFoundException;
 import com.expense.manage.ExpenseManagement.model.ExpenseDetails;
 
 @Service("expnseService")
@@ -28,6 +29,10 @@ public class ExpenseMangServiceImp implements ExpenseMangService {
 		try {
 			return expenseDao.addExpense(details);
 		}
+		catch (ResourceNotFoundException re) {
+			// throw a dao exception if occurs
+			throw re;
+		}
 		catch (Exception e) {
 			LOG.error("Excpeton occurs while to  addExpenseDetails service" + e);
 			throw new ExpenseException("something went wrong when adding a expense");
@@ -41,6 +46,9 @@ public class ExpenseMangServiceImp implements ExpenseMangService {
 			return expenseDao.getAllExenseById(userId);
 
 		}
+		catch (ResourceNotFoundException re) {
+			throw re;
+		}
 		catch (Exception e) {
 			LOG.error("Excpeton occurs in getAllExpenseByUserId service" + e);
 			throw new ExpenseException("something went wrong when getting a expenses");
@@ -52,6 +60,9 @@ public class ExpenseMangServiceImp implements ExpenseMangService {
 		// TODO Auto-generated method stub
 		try {
 			return expenseDao.updateExpense(details);
+		}
+		catch (ResourceNotFoundException re) {
+			throw re;
 		}
 		catch (Exception e) {
 			LOG.error("Excpeton occurs while in  updateExpenseDetails service" + e);
@@ -76,6 +87,9 @@ public class ExpenseMangServiceImp implements ExpenseMangService {
 			}
 			listOfExpense.put("Total :", Double.toString(total));
 			return listOfExpense;
+		}
+		catch (ResourceNotFoundException re) {
+			throw re;
 		}
 		catch (ArithmeticException ar) {
 			LOG.error("Excpeton occurs while in  summaryExpense service" + ar);

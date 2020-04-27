@@ -37,41 +37,19 @@ public class ExpenseDaoTest {
 	@Test
 	public void testaddExpense() {
 
-		try {
+		ExpenseDto expensedto = CommonOper.modelMapper.map(expenseDao.addExpense(expense), ExpenseDto.class);
+		assertThat(expense.getUser_id().getId()).isEqualTo(expensedto.getUser_id().getId());
 
-			ExpenseDto expensedto = CommonOper.modelMapper.map(expenseDao.addExpense(expense), ExpenseDto.class);
-			assertThat(expense.getUser_id().getId()).isEqualTo(expensedto.getUser_id().getId());
-			// assertEquals("record is added", expensedto,
-			// expenseDao.addExpense(expense));
-		}
-		catch (ResourceNotFoundException re) {
-			assertEquals("UserId id is already Exists,Want Unique user id", re.getMessage());
-		}
-		catch (Exception e) {
-
-			assertTrue(true);
-
-		}
 	}
 
 	@Test
 	public void testupdateExpense() {
+		expense.setId(7);
+		expense.setCategory("Updated Category");
+		ExpenseDto expensedto = CommonOper.modelMapper.map(expenseDao.updateExpense(expense), ExpenseDto.class);
+		expensedto.setCategory("Updated Category");
+		assertThat(expense.getCategory()).isEqualTo(expensedto.getCategory());
 
-		try {
-			expense.setId(7);
-			expense.setCategory("Updated Category");
-			ExpenseDto expensedto = CommonOper.modelMapper.map(expenseDao.updateExpense(expense), ExpenseDto.class);
-			assertThat(expense.getUser_id().getId()).isEqualTo(expensedto.getUser_id().getId());
-			assertThat(expense.getCategory()).isEqualTo(expensedto.getCategory());
-		}
-		catch (ResourceNotFoundException re) {
-			assertEquals("UserId id is already Exists,Want Unique user id", re.getMessage());
-		}
-		catch (Exception e) {
-
-			assertTrue(true);
-
-		}
 	}
 
 	@Test
@@ -94,4 +72,45 @@ public class ExpenseDaoTest {
 		}
 	}
 
+	// -ve test case when user id not exists
+	@Test
+	public void testAddExpense() {
+
+		try {
+
+			ExpenseDto expensedto = CommonOper.modelMapper.map(expenseDao.addExpense(expense), ExpenseDto.class);
+			expensedto.getUser_id().setId("notexist@gmail.com");
+			;
+			assertThat(expense.getUser_id().getId()).isEqualTo(expensedto.getUser_id().getId());
+		}
+		catch (ResourceNotFoundException re) {
+			assertEquals("User account is not found,Please first create user account to add expenses", re.getMessage());
+		}
+		catch (Exception e) {
+
+			assertTrue(true);
+
+		}
+	}
+
+	// -ve test case when expense Id is not exists
+	@Test
+	public void testUpdateExpenseIDNotFound() {
+
+		try {
+			expense.setId(100);
+			expense.setCategory("Updated Category");
+			ExpenseDto expensedto = CommonOper.modelMapper.map(expenseDao.updateExpense(expense), ExpenseDto.class);
+			assertThat(expense.getUser_id().getId()).isEqualTo(expensedto.getUser_id().getId());
+			assertThat(expense.getCategory()).isEqualTo(expensedto.getCategory());
+		}
+		catch (ResourceNotFoundException re) {
+			assertEquals("Expense Id is not found", re.getMessage());
+		}
+		catch (Exception e) {
+
+			assertTrue(true);
+
+		}
+	}
 }

@@ -1,6 +1,7 @@
 package com.expense.manage.ExpenseManagement.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class ExpenseRepositoryTest {
 
 		}
 		catch (Exception e) {
-
+			assertTrue(true);
 		}
 	}
 

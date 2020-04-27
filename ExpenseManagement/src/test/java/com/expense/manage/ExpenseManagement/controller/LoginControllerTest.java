@@ -21,8 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.expense.manage.ExpenseManagement.model.UserCredentials;
 import com.expense.manage.ExpenseManagement.service.CommonOper;
 import com.expense.manage.ExpenseManagement.service.RegisterService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = LoginController.class)
@@ -38,8 +36,8 @@ public class LoginControllerTest {
 	public void testCreateTicket() throws Exception {
 
 		CommonOper.craeteUser();
-		String inputInJson = this.mapToJson(CommonOper.userDetail);
-		String responeInJson = this.mapToJson(CommonOper.userDto);
+		String inputInJson = CommonOper.mapToJson(CommonOper.userDetail);
+		String responeInJson = CommonOper.mapToJson(CommonOper.userDto);
 
 		String URI = "/login/registerUser";
 
@@ -61,8 +59,8 @@ public class LoginControllerTest {
 	@Test
 	public void updatePasswordTest() throws Exception {
 
-		String inputInJson = this.mapToJson(CommonOper.userDetail);
-		String responeInJson = this.mapToJson(CommonOper.userDto);
+		String inputInJson = CommonOper.mapToJson(CommonOper.userDetail);
+		String responeInJson = CommonOper.mapToJson(CommonOper.userDto);
 
 		String URI = "/login/updatePassword";
 
@@ -101,9 +99,18 @@ public class LoginControllerTest {
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 
-	// Method to map Object to Json
-	public static String mapToJson(Object object) throws JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		return objectMapper.writeValueAsString(object);
+	// -ve TestCase to check url for bad Request
+	public void ToCheckBadRequestTest() throws Exception {
+
+		String URI = "/login/loginUser";
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post(URI).accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
+
 	}
 }
